@@ -1,0 +1,22 @@
+services:
+  - type: web
+    name: picoclaw
+    env: docker
+    dockerfilePath: ./docker/Dockerfile
+    repo: https://github.com/YOUR_USERNAME/picoclaw  # Your forked repo
+    branch: main
+    dockerContext: ./docker
+    plan: free  # Or 'starter' for paid
+    envVars:
+      - key: SETUP_PASSWORD
+        sync: false  # Set this secret in Render dashboard
+      - fromDatabase:
+          name: picoclaw-data
+          property: connectionString
+    disks:
+      - name: picoclaw-data
+        mountPath: /data
+        sizeGB: 1  # Requires paid plan
+    healthCheckPath: /healthz  # Adjust if PicoClaw has a health endpoint
+    autoDeploy: true
+
